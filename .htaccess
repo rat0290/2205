@@ -4,10 +4,20 @@ RewriteBase /
 # Não reescrever arquivos PHP dentro da pasta api/
 RewriteCond %{REQUEST_URI} !^/api/
 
+# Evitar reescrita para arquivos estáticos (CSS, JS, imagens)
+RewriteCond %{REQUEST_URI} !\.(css|js|jpg|jpeg|png|gif|bmp|ico|svg|webp)$ [NC]
+
 # Impedir a reescrita do index.php
 RewriteRule ^index\.php$ - [L]
+
+# Forçar redirecionamento para HTTPS (se necessário)
+RewriteCond %{HTTPS} off
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 # Reescrever tudo para index.php, exceto arquivos existentes
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
+
+# Página de erro personalizada 404 (se necessário)
+ErrorDocument 404 /404.html
