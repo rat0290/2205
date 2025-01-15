@@ -1,0 +1,13 @@
+RewriteEngine On
+RewriteBase /
+
+# Não reescrever arquivos PHP dentro da pasta api/
+RewriteCond %{REQUEST_URI} !^/api/
+
+# Impedir a reescrita do index.php
+RewriteRule ^index\.php$ - [L]
+
+# Reescrever tudo para index.php, exceto arquivos existentes
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
